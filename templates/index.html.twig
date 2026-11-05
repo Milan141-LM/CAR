@@ -1,0 +1,146 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Cars List{% endblock %}
+
+{% block content %}
+<h1>Cars List</h1>
+
+<div class="actions-row">
+  <a href="add.php" class="btn btn-green">+ Add New Car</a>
+</div>
+
+<!-- Search form -->
+<form method="get" action="index.php">
+  <div class="search-form">
+    <label>Make
+      <div class="search-wrap">
+        <input type="text" name="make" id="search-make" value="{{ filters.make }}" autocomplete="off" placeholder="Toyota…">
+        <ul id="autocomplete-list"></ul>
+      </div>
+    </label>
+    <label>Model
+      <input type="text" name="model" value="{{ filters.model }}" placeholder="Corolla…">
+    </label>
+    <label>Year
+      <input type="number" name="year" value="{{ filters.year }}" placeholder="2021" min="1900" max="2100" style="width:80px">
+    </label>
+    <label>Color
+      <input type="text" name="color" value="{{ filters.color }}" placeholder="Red…">
+    </label>
+    <label>Max Price (€)
+      <input type="number" name="price" value="{{ filters.price }}" placeholder="50000" min="0" step="100" style="width:100px">
+    </label>
+    <div style="display:flex;gap:6px">
+      <button type="submit" class="btn btn-blue">Search</button>
+      <a href="index.php" class="btn btn-grey">Reset</a>
+    </div>
+  </div>
+</form>
+
+<!-- Cars table -->
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>Make</th><th>Model</th><th>Year</th><th>Color</th><th>Price (€)</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if cars %}
+    {% for car in cars %}
+    <tr>
+      <td>{{ car.id }}</td>
+      <td>{{ car.make }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td>{{ car.color }}</td>
+      <td>{{ car.price|number_format(2) }}</td>
+      <td>
+        <a href="edit.php?id={{ car.id }}" class="btn btn-blue">Edit</a>
+        &nbsp;
+        <form method="post" action="index.php" style="display:inline"
+              onsubmit="return confirm('Delete this car?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="delete_id"  value="{{ car.id }}">
+          <button type="submit" class="btn btn-red">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  {% else %}
+    <tr><td colspan="7" style="text-align:center">No cars found.</td></tr>
+  {% endif %}
+  </tbody>
+</table>
+
+<script>
+const makeInput = document.getElementById('search-make');
+const list      = document.getElementById('autocomplete-list');
+
+makeInput.addEventListener('input', function () {
+    const q = this.value.trim();
+    list.innerHTML = '';
+    if (q.length < 1) return;
+    fetch('search_ajax.php?q=' + encodeURIComponent(q))
+        .then(r => r.json())
+        .then(data => {
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.addEventListener('click', () => { makeInput.value = item; list.innerHTML = ''; filterTable(); });
+                list.appendChild(li);
+            });
+        });
+});
+document.addEventListener('click', function (e) {
+    if (e.target !== makeInput) list.innerHTML = '';
+});
+
+function filterTable() {
+    const make = document.querySelector('input[name="make"]').value.toLowerCase();
+    const model = document.querySelector('input[name="model"]').value.toLowerCase();
+    const year = document.querySelector('input[name="year"]').value;
+    const color = document.querySelector('input[name="color"]').value.toLowerCase();
+    const price = document.querySelector('input[name="price"]').value;
+
+    const rows = document.querySelectorAll('table tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length === 0) return;
+
+        const rowMake = cells[1].textContent.toLowerCase();
+        const rowModel = cells[2].textContent.toLowerCase();
+        const rowYear = cells[3].textContent.trim();
+        const rowColor = cells[4].textContent.toLowerCase();
+        const rowPrice = parseFloat(cells[5].textContent.replace(/[^0-9.]/g, ''));
+
+        const matchMake = make === '' || rowMake.includes(make);
+        const matchModel = model === '' || rowModel.includes(model);
+        const matchYear = year === '' || rowYear === year;
+        const matchColor = color === '' || rowColor.includes(color);
+        const matchPrice = price === '' || rowPrice <= parseFloat(price);
+
+        if (matchMake && matchModel && matchYear && matchColor && matchPrice) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    const noResultRow = document.querySelector('table tbody tr td[colspan="7"]');
+    if (noResultRow && visibleCount === 0) {
+        noResultRow.parentElement.style.display = '';
+    } else if (noResultRow) {
+        noResultRow.parentElement.style.display = 'none';
+    }
+}
+
+document.querySelector('input[name="make"]').addEventListener('input', filterTable);
+document.querySelector('input[name="model"]').addEventListener('input', filterTable);
+document.querySelector('input[name="year"]').addEventListener('input', filterTable);
+document.querySelector('input[name="color"]').addEventListener('input', filterTable);
+document.querySelector('input[name="price"]').addEventListener('input', filterTable);
+</script>
+{% endblock %}

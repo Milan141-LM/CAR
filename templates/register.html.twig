@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<h1>Create Account</h1>
+
+{% if errors %}
+  <div class="alert alert-error">
+    <ul style="margin:0;padding-left:18px">
+      {% for err in errors %}<li>{{ err }}</li>{% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+<div class="form-card">
+  <form method="post" action="register.php" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" value="{{ values.username }}"
+             maxlength="50" autocomplete="username"
+             class="{{ 'username' in field_errors ? 'is-invalid' : '' }}" required>
+      {% if 'username' in field_errors %}
+        <div class="invalid-feedback">{{ field_error_messages.username }}</div>
+      {% else %}
+        <div class="password-hint">3–50 characters, letters/digits/underscores only.</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ values.email }}"
+             maxlength="255" autocomplete="email"
+             class="{{ 'email' in field_errors ? 'is-invalid' : '' }}" required>
+      {% if 'email' in field_errors %}
+        <div class="invalid-feedback">{{ field_error_messages.email }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="new-password"
+             class="{{ 'password' in field_errors ? 'is-invalid' : '' }}" required>
+      {% if 'password' in field_errors %}
+        <div class="invalid-feedback">{{ field_error_messages.password }}</div>
+      {% else %}
+        <div class="password-hint">Minimum 8 characters.</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="password_confirm">Confirm Password</label>
+      <input type="password" id="password_confirm" name="password_confirm" autocomplete="new-password"
+             class="{{ 'password_confirm' in field_errors ? 'is-invalid' : '' }}" required>
+      {% if 'password_confirm' in field_errors %}
+        <div class="invalid-feedback">{{ field_error_messages.password_confirm }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="captcha_answer">Verify: {{ captcha.question }} = ?</label>
+      <input type="text" id="captcha_answer" name="captcha_answer" inputmode="numeric"
+             class="{{ 'captcha_answer' in field_errors ? 'is-invalid' : '' }}" required>
+      {% if 'captcha_answer' in field_errors %}<div class="invalid-feedback">{{ field_error_messages.captcha_answer }}</div>{% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-green" style="width:100%">Create Account</button>
+  </form>
+
+  <p class="text-center mt-16" style="font-size:13px">
+    Already have an account? <a href="login.php">Login here</a>
+  </p>
+</div>
+{% endblock %}

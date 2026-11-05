@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Cars List{% endblock %}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body   { font-family: Arial, sans-serif; margin: 0; background: #f5f6fa; color: #333; }
+    header { background: #2c3e50; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+    header a { color: #ecf0f1; text-decoration: none; font-size: 14px; }
+    header a:hover { text-decoration: underline; }
+    header .brand { font-size: 18px; font-weight: bold; }
+    header nav   { display: flex; align-items: center; gap: 16px; }
+    .container   { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+    h1 { margin-top: 0; }
+    table { border-collapse: collapse; width: 100%; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    th, td { border: 1px solid #e0e0e0; padding: 10px 14px; text-align: left; }
+    th   { background: #ecf0f1; font-weight: bold; }
+    tr:hover td { background: #fafafa; }
+    .btn        { padding: 6px 14px; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 13px; display: inline-block; }
+    .btn-blue   { background: #3498db; color: #fff; }
+    .btn-green  { background: #27ae60; color: #fff; }
+    .btn-red    { background: #e74c3c; color: #fff; }
+    .btn-grey   { background: #888;    color: #fff; }
+    .alert      { padding: 10px 14px; border-radius: 4px; margin-bottom: 14px; font-size: 14px; }
+    .alert-error   { background: #fdecea; color: #c0392b; border: 1px solid #e74c3c; }
+    .alert-success { background: #eafaf1; color: #1e8449; border: 1px solid #27ae60; }
+    .form-card  { background: #fff; padding: 28px 32px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.12); max-width: 440px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label  { display: block; font-size: 13px; margin-bottom: 4px; font-weight: bold; }
+    .form-group input  { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    .form-group input.is-invalid { border-color: #e74c3c; }
+    .invalid-feedback { color: #e74c3c; font-size: 12px; margin-top: 4px; }
+    .search-form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: flex-end; background: #fff; padding: 16px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .search-form label { display: flex; flex-direction: column; font-size: 12px; gap: 3px; }
+    .search-form input { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    #autocomplete-list { border: 1px solid #ccc; background: #fff; position: absolute; z-index: 100; list-style: none; margin: 0; padding: 0; min-width: 180px; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+    #autocomplete-list li { padding: 7px 12px; cursor: pointer; font-size: 13px; }
+    #autocomplete-list li:hover { background: #eee; }
+    .search-wrap { position: relative; display: inline-block; }
+    .actions-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; }
+    .password-hint { font-size: 11px; color: #888; margin-top: 3px; }
+    .text-center { text-align: center; }
+    .mt-16 { margin-top: 16px; }
+  </style>
+</head>
+<body>
+<header>
+  <span class="brand"><a href="index.php" style="color:#fff;text-decoration:none">🚗 Cars Manager</a></span>
+  <nav>
+    {% if current_user %}
+      <span>Hello, <strong>{{ current_user.username }}</strong></span>
+      <a href="logout.php">Logout</a>
+    {% else %}
+      <a href="login.php">Login</a>
+      <a href="register.php">Register</a>
+    {% endif %}
+  </nav>
+</header>
+
+<div class="container">
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>
