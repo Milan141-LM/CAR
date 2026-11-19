@@ -1,7 +1,5 @@
 <?php
 require 'db.php';
-require 'auth.php';
-require_auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     csrf_verify();
