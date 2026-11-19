@@ -41,7 +41,7 @@
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" autocomplete="new-password"
+      <input type="password" id="password" name="password" autocomplete="new-password" maxlength="72"
              class="{{ 'password' in field_errors ? 'is-invalid' : '' }}" required>
       {% if 'password' in field_errors %}
         <div class="invalid-feedback">{{ field_error_messages.password }}</div>
