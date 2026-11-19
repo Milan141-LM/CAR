@@ -34,7 +34,7 @@
 
     <div class="form-group">
       <label for="captcha_answer">Verify: {{ captcha.question }} = ?</label>
-      <input type="text" id="captcha_answer" name="captcha_answer" inputmode="numeric"
+      <input type="text" id="captcha_answer" name="captcha_answer" inputmode="numeric" autocomplete="off"
              class="{{ 'captcha_answer' in field_errors ? 'is-invalid' : '' }}" required>
       {% if 'captcha_answer' in field_errors %}<div class="invalid-feedback">{{ field_error_messages.captcha_answer }}</div>{% endif %}
     </div>
