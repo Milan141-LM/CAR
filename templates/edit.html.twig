@@ -19,7 +19,7 @@
 
     <div class="form-group">
       <label for="make">Make</label>
-      <input type="text" id="make" name="make" value="{{ values.make }}" maxlength="100"
+      <input type="text" id="make" name="make" value="{{ values.make }}" maxlength="100" autocomplete="off"
              class="{{ 'make' in field_errors ? 'is-invalid' : '' }}" required>
       {% if 'make' in field_errors %}<div class="invalid-feedback">Make is required.</div>{% endif %}
     </div>
