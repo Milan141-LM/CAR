@@ -50,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (mb_strlen($password) < 8) {
         $field_errors[]                      = 'password';
         $field_error_messages['password']    = 'Password must be at least 8 characters.';
+    } elseif (mb_strlen($password) > 72) {
+        $field_errors[]                      = 'password';
+        $field_error_messages['password']    = 'Password must not exceed 72 characters.';
     }
 
     if ($password !== '' && $password !== $password_confirm) {
