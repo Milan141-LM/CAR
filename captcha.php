@@ -28,15 +28,17 @@ function get_captcha(): array
     ];
 }
 
-function verify_captcha($user_answer): bool
+function verify_captcha(string $answer): bool
 {
+    $answer = trim($answer);
+
     $correct_answer = $_SESSION['captcha_answer'] ?? null;
 
     if ($correct_answer === null) {
         return false;
     }
 
-    $user_answer = trim($user_answer ?? '');
+    $user_answer = trim($answer);
 
     if ($user_answer === '' || !is_numeric($user_answer)) {
         return false;
