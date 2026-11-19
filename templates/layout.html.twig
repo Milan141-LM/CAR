@@ -45,9 +45,12 @@
     .password-hint { font-size: 11px; color: #888; margin-top: 3px; }
     .text-center { text-align: center; }
     .mt-16 { margin-top: 16px; }
+    .skip-link { position:absolute; left:-999px; top:8px; background:#fff; color:#2c3e50; padding:8px 12px; z-index:1000; }
+    .skip-link:focus { left:8px; }
   </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header>
   <span class="brand"><a href="index.php" style="color:#fff;text-decoration:none">🚗 Cars Manager</a></span>
   <nav>
@@ -61,8 +64,8 @@
   </nav>
 </header>
 
-<div class="container">
+<main class="container" id="main-content">
   {% block content %}{% endblock %}
-</div>
+</main>
 </body>
 </html>
