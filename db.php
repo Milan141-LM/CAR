@@ -1,4 +1,3 @@
-
 <?php
 
 ini_set('session.cookie_httponly', '1');
@@ -78,7 +77,7 @@ function csrf_verify(): void
     }
 }
 
-// Escape HTML output
+// Escape HTML output 
 function e(string $s): string
 {
     return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
