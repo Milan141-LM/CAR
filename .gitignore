@@ -1,0 +1,17 @@
+# Composer and PHP
+/vendor/
+
+# Local environment files
+.env
+.env.*
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# PHP and application caches
+*.log
+*.cache
+php_errors.log
